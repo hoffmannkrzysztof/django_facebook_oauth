@@ -30,11 +30,14 @@ def authentication_callback(request):
         resp = HttpResponseRedirect(url)
 
     else:
-        auth_login(request, user)
 
-        #figure out where to go after setup
-        url = getattr(settings, "LOGIN_REDIRECT_URL", "/")
+        if user.is_active:
+            auth_login(request, user)
+            #figure out where to go after setup
+            url = getattr(settings, "LOGIN_REDIRECT_URL", "/")
+        else:
+            url = "/"
 
         resp = HttpResponseRedirect(url)
-    
+
     return resp
