@@ -26,6 +26,13 @@ def login(request):
 def authentication_callback(request):
     """ Second step of the login process.
     It reads in a code from Facebook, then redirects back to the home page. """
+
+    if request.GET.get("error",None):
+        messages.error(request, _('Your registration has been cancelled.'))
+        url = getattr(settings, "LOGIN_REDIRECT_URL", "/")
+        resp = HttpResponseRedirect(url)
+        return resp
+
     code = request.GET.get('code')
     user = authenticate(token=code, request=request)
 
@@ -33,11 +40,9 @@ def authentication_callback(request):
         #we have to set this user up
         url = reverse('facebook_setup')
         url += "?code=%s" % code
-
         resp = HttpResponseRedirect(url)
 
     else:
-
         if user.is_active:
             auth_login(request, user)
             #figure out where to go after setup
@@ -46,7 +51,6 @@ def authentication_callback(request):
         else:
             messages.error(request, _('Your account has been locked. Please contact your system administrator') )
             url = "/"
-
         resp = HttpResponseRedirect(url)
 
     return resp
