@@ -19,7 +19,11 @@ class FacebookBackend:
         # Get a legit access token
         target = urllib.urlopen('https://graph.facebook.com/oauth/access_token?' + urllib.urlencode(args)).read()
         response = cgi.parse_qs(target)
-        access_token = response['access_token'][-1]
+        try:
+            access_token = response['access_token'][-1]
+        except KeyError:
+            return None
+
 
         # Read the user's profile information
         fb_profile = urllib.urlopen('https://graph.facebook.com/me?access_token=%s' % access_token)
