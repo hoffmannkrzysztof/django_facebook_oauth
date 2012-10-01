@@ -3,8 +3,7 @@ import cgi, urllib, json
 from django.conf import settings
 from django.contrib.auth.models import User, AnonymousUser
 from django.db import IntegrityError
-
-from facebook.models import FacebookProfile
+from django.db.models.loading import get_model
 
 class FacebookBackend:
     def authenticate(self, token=None, request=None,redirect_uri='/facebook/authentication_callback'):
@@ -15,6 +14,10 @@ class FacebookBackend:
             'redirect_uri': request.build_absolute_uri( redirect_uri ),
             'code': token,
         }
+
+        # Get Model to use
+        appmodel = settings.AUTH_PROFILE_MODULE.split(".")
+        FacebookProfile = get_model(appmodel[0],appmodel[1])
 
         # Get a legit access token
         target = urllib.urlopen('https://graph.facebook.com/oauth/access_token?' + urllib.urlencode(args)).read()
