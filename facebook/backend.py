@@ -2,6 +2,7 @@ import cgi, urllib, json
 
 from django.conf import settings
 from django.contrib.auth.models import User, AnonymousUser
+from django.core.mail import mail_admins
 from django.db import IntegrityError
 from django.db.models.loading import get_model
 
@@ -25,6 +26,7 @@ class FacebookBackend:
         try:
             access_token = response['access_token'][-1]
         except KeyError:
+            mail_admins("ERR",response)
             return None
 
 
