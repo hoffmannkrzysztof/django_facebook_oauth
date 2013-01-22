@@ -7,7 +7,7 @@ from django.db import IntegrityError
 from django.db.models.loading import get_model
 
 class FacebookBackend:
-    def authenticate(self, token=None, request=None,redirect_uri='/facebook/authentication_callback'):
+    def authenticate(self, token=None, request=None,redirect_uri='/'):
         """ Reads in a Facebook code and asks Facebook if it's valid and what user it points to. """
         args = {
             'client_id': settings.FACEBOOK_APP_ID,
