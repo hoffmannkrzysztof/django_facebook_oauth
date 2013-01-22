@@ -11,10 +11,10 @@ from django.utils.translation import ugettext as _
 def login(request):
     """ First step of process, redirects user to facebook, which redirects to authentication_callback. """
 
-    redirect_uri = request.GET.get('redirect_uri','/facebook/authentication_callback')
+    redirect_uri = request.GET.get('redirect_uri','/')
 
     if not redirect_uri:
-        redirect_uri = '/facebook/authentication_callback'
+        redirect_uri = '/'
 
     args = {
         'client_id': settings.FACEBOOK_APP_ID,
