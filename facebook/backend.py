@@ -31,7 +31,7 @@ class FacebookBackend:
 
 
         # Read the user's profile information
-        fb_profile = urllib.urlopen('https://graph.facebook.com/me?access_token=%s' % access_token)
+        fb_profile = urllib.urlopen('https://graph.facebook.com/me?fields=id,first_name,last_name,email,name&access_token=%s' % access_token)
         fb_profile = json.load(fb_profile)
 
         try:
